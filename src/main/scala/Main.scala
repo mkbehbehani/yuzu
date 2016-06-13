@@ -1,11 +1,14 @@
 package yuzu
 
+import java.io.File
+
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
 import akka.stream.scaladsl.{Flow, Source}
 import com.sksamuel.elastic4s.ElasticDsl._
 import com.sksamuel.elastic4s.source.DocumentSource
 import com.sksamuel.elastic4s.{ElasticClient, ElasticsearchClientUri}
+import com.typesafe.config.ConfigFactory
 import com.typesafe.scalalogging.Logger
 import me.tongfei.progressbar.ProgressBar
 import org.elasticsearch.common.settings.Settings
@@ -30,12 +33,15 @@ object Main {
     val memberRange = Source(processedItems to documentCount)
     val ec = scala.concurrent.ExecutionContext.Implicits.global
     val cores = Runtime.getRuntime.availableProcessors()
-    println(s"Utilizing $cores")
+    println(s"Utilizing $cores CPU cores")
     val elasticSearchIndex = indexName
     val elasticsearchURL = ElasticsearchClientUri("elasticsearch://localhost:9300")
     val settings = Settings.settingsBuilder().put("cluster.name", "es_mk1")
     val docsRemaining = documentCount - processedItems
     val progressBar = new ProgressBar("Populating elasticsearch", documentCount)
+    val config1 =  ConfigFactory.parseFile(new File("./yuzu.conf"))
+    println("Found config file "+ config1.getString("serverip"))
+
     progressBar.start()
     val client = ElasticClient.remote(settings.build, elasticsearchURL)
     def reportProgress(count: Int) = {
