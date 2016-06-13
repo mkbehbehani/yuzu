@@ -19,6 +19,7 @@ import scala.concurrent.{ExecutionContext, Future}
 object Main {
   def main(args: Array[String]): Unit = {
     val logger = Logger(LoggerFactory.getLogger("yuzu-logger"))
+    val config =  ConfigFactory.parseFile(new File("./yuzu.conf"))
     implicit val system = ActorSystem("reactive-yuzu")
     implicit val materializer = ActorMaterializer()
     case class Person(docTuple: (Int,String)) extends DocumentSource {
@@ -33,15 +34,12 @@ object Main {
     val memberRange = Source(processedItems to documentCount)
     val ec = scala.concurrent.ExecutionContext.Implicits.global
     val cores = Runtime.getRuntime.availableProcessors()
-    println(s"Utilizing $cores CPU cores")
+    logger.info(s"Utilizing $cores CPU cores")
     val elasticSearchIndex = indexName
-    val elasticsearchURL = ElasticsearchClientUri("elasticsearch://localhost:9300")
-    val settings = Settings.settingsBuilder().put("cluster.name", "es_mk1")
+    val elasticsearchURL = ElasticsearchClientUri("elasticsearch://" + config.getString("cluster.location"))
+    val settings = Settings.settingsBuilder().put("cluster.name", config.getString("cluster.name"))
     val docsRemaining = documentCount - processedItems
     val progressBar = new ProgressBar("Populating elasticsearch", documentCount)
-    val config1 =  ConfigFactory.parseFile(new File("./yuzu.conf"))
-    println("Found config file "+ config1.getString("serverip"))
-
     progressBar.start()
     val client = ElasticClient.remote(settings.build, elasticsearchURL)
     def reportProgress(count: Int) = {
@@ -80,12 +78,12 @@ object Main {
       }
       client.execute {
         bulk(for (jsonObject <- jsonObjects) yield index into elasticSearchIndex / "fakeperson" id jsonObject._1 doc Person(jsonObject))
-      }.await
+      }
       reportProgress(jsonObjects.size)
     }
     def jsonGenerationFlow(implicit ec: ExecutionContext): Flow[Int, (Int,String), Unit] = {
       Flow[Int].mapAsyncUnordered(cores)(id => generateJson(id))
     }
-    memberRange.via(jsonGenerationFlow(ec)).grouped(10000).runForeach(pushToElasticsearch)
+    memberRange.via(jsonGenerationFlow(ec)).grouped(config.getInt("batch-size")).runForeach(pushToElasticsearch)
   }
 }
