@@ -1,5 +1,5 @@
-import org.scalatest.Matchers._
 import org.scalatest._
+import org.scalatest.Matchers._
 import yuzu.RandomData
 
 class RandomDataSpec extends FunSpec {
@@ -10,29 +10,42 @@ class RandomDataSpec extends FunSpec {
     }
   }
   describe("A random first name") {
-    val testFirstNames = Tuple2(RandomData.firstName, RandomData.firstName)
-    val testFirstName = testFirstNames._1
+    val testFirstName1 = RandomData.firstName
+    val testFirstName2 = RandomData.firstName
     it("is unique") {
-      testFirstName should not equal testFirstNames._2
+      testFirstName1 should not equal testFirstName2
     }
     it("is a string") {
-      testFirstName shouldBe a [String]
+      testFirstName1 shouldBe a [String]
     }
     it("is at least 2 characters") {
-      testFirstName.length should be >= 2
+      testFirstName1.length should be >= 2
     }
   }
   describe("A random last name") {
-    val testLastNames = Tuple2(RandomData.firstName, RandomData.firstName)
-    val testLastName = testLastNames._1
+    val testLastName1 = RandomData.lastName
+    val testLastName2 = RandomData.lastName
     it("is unique") {
-      testLastName should not equal testLastNames._2
+      testLastName1 should not equal testLastName2
     }
     it("is a string") {
-      testLastName shouldBe a [String]
+      testLastName1 shouldBe a [String]
     }
     it("is at least 2 characters") {
-      testLastName.length should be >= 2
+      testLastName1.length should be >= 2
+    }
+  }
+  describe("A random address") {
+    val testAddress1 = RandomData.address
+    val testAddress2 = RandomData.address
+    it("is unique") {
+      testAddress1 should not equal testAddress2
+    }
+    it("is a string") {
+      testAddress1 shouldBe a [String]
+    }
+    it("is at least 2 characters") {
+      testAddress1.length should be >= 2
     }
   }
 }

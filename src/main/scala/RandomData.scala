@@ -56,13 +56,9 @@ object RandomData {
       case e: Exception => println("Unable to generate last name")
     }
   }
-  def address = {
-    try {
-      val number = randomGenerator.nextInt(999)
-      number.toString + " " + street
-    } catch {
-      case e: Exception => println("Unable to generate address")
-    }
+  def address:String = {
+    val number = randomGenerator.nextInt(999)
+    number.toString + " " + street
   }
 
   def zipCode = {
