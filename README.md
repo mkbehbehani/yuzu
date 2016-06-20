@@ -45,3 +45,14 @@ For ease of use on a remote cluster, the app can be compiled into a jar by runni
 sbt assembly
 ```
 A yuzu.conf file containing the cluster settings and bulk size are required to run the application.
+```javascript
+"cluster" : {
+  "name": "democluster"
+  "location": "localhost:9300"
+}
+batch-size=10000
+```
+Note:
+* Batches can be up to 100,000 while still maintaining performance. Any greater value may require that you modify the number of replicas and bulk queue size.
+* Port 9300 is required for Yuzu, as it transfers data over TCP. You may see port 9200 in many other Elasticsearch documents, but that port is only for HTTP connections.
+* 
