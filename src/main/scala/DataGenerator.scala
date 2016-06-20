@@ -1,5 +1,4 @@
-import yuzu.RandomData
-
+package yuzu
 import scala.concurrent.{ExecutionContext, Future}
 
 object DataGenerator {

@@ -1,8 +1,7 @@
 import org.scalatest._
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.Matchers._
-
-
+import yuzu.DataGenerator
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class DataGeneratorSpec extends FunSpec with ScalaFutures {
