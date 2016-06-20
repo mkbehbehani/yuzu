@@ -1,4 +1,4 @@
-# Yuzu
+# Yuzu  [ ![Codeship Status for mkbehbehani/yuzu](https://codeship.com/projects/cf608c80-1937-0134-5ae6-76802887a5c5/status?branch=master)](https://codeship.com/projects/158870)
 ## A Scala + Akka Streams massive fake data generator for Elasticsearch
 
 Generates fake JSON data for elasticsearch research and development. Built for massive dataset generation. 
@@ -64,3 +64,8 @@ batch-size=10000
 Note:
 * Batches can be up to 100,000 while still maintaining performance. Any greater value may require that you modify the number of replicas and bulk queue size.
 * Port 9300 is required for Yuzu, as it transfers data over TCP. You may see port 9200 in many other Elasticsearch documents, but that port is only for HTTP connections.
+
+## Contribute
+PR's welcome. Additions needed:
+*Expanded test suite
+*Additional Elasticsearch version support, currently only v2.3.3 is supported.
