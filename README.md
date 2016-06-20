@@ -13,10 +13,19 @@ Creation and transfer of 100 million fake person documents into the cluster took
 
 ## Elasticsearch Settings
 * Increase the default bulk queue size from the default 50:
-```
+```javascript
 curl -XPUT localhost:9200/_cluster/settings -d '{
     "persistent" : {
         "threadpool.bulk.queue_size" : 3000
+    }
+}'
+```
+
+It may be helpful to increase the index queue size. Yuzu was tested with both bulk and index updated, although only bulk should be necessary.
+```javascript
+curl -XPUT localhost:9200/_cluster/settings -d '{
+    "persistent" : {
+        "threadpool.index.queue_size" : 3000
     }
 }'
 ```
