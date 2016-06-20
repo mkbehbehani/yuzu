@@ -16,7 +16,8 @@ libraryDependencies ++= Seq(
   "com.sksamuel.elastic4s" %% "elastic4s-core" % "2.1.0",
   "com.typesafe.akka" % "akka-stream-experimental_2.11" % "1.0",
   "com.typesafe.scala-logging" %% "scala-logging" % "3.1.0",
-  "me.tongfei" % "progressbar_2.11" % "0.3.2"
+  "me.tongfei" % "progressbar_2.11" % "0.3.2",
+  "org.scalatest" %% "scalatest" % "2.2.6" % "test"
 )
 assemblyMergeStrategy in assembly := {
   case PathList("reference.conf") => MergeStrategy.concat
