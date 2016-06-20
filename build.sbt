@@ -19,6 +19,7 @@ libraryDependencies ++= Seq(
   "me.tongfei" % "progressbar_2.11" % "0.3.2",
   "org.scalatest" %% "scalatest" % "2.2.6" % "test"
 )
+
 assemblyMergeStrategy in assembly := {
   case PathList("reference.conf") => MergeStrategy.concat
   case PathList(ps @ _*) if ps.last contains "BaseDateTime" => MergeStrategy.first
